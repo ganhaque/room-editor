@@ -1,0 +1,31 @@
+.tile {
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile:hover {
+  opacity: 70%;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+}
+
+.tile-row {
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
