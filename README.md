@@ -1,5 +1,9 @@
 # Room Editor
 
+<div align='center'>
+<img height=600 src="./.github/room-editor-v1-screenshot.png">
+</div>
+
 # Installation/Build
 Make sure you have rust installed
 ```bash
