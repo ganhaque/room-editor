@@ -2,7 +2,7 @@
 
 # Installation/Build
 Make sure you have rust installed
-```
+```bash
 # git clone & cd into the repo
 git clone https://github.com/ganhaque/port-moon.git && cd room-editor
 
