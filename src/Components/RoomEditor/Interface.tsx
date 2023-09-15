@@ -1,64 +1,64 @@
-export const ObjectID = [
-  "Chest-2",
-  "Monster-1",
-]
+export const tileTypeToColor: Record<string, string> = {
+  transition: "#be95ff",
+  npc: "#f2cdcd",
+  chest: "#f6ca6b",
+  battle: "#E95678",
+  terrain: "#95c561"
+};
 
 export interface Room {
   roomID: string;
   roomName: string;
-  tiles: number[][];
-  interactableTiles: InteractableTile[];
-  transitionTiles: TransitionTile[];
+  specialTiles: SpecialTile[];
 }
 
-interface InteractableTile {
+export interface SpecialTile {
   x: number;
   y: number;
-  type: "npc" | "chest";
+  type: string;
   dialogue?: string;
   contents?: string[];
-}
-
-interface TransitionTile {
-  x: number;
-  y: number;
-  type: "normal";
+  destinationRoomID?: string;
+  requirement?: string;
 }
 
 export const exampleRoom: Room = {
   roomID: "00-00",
   roomName: "Forest Clearing",
-  tiles: [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 0, 0, 2, 2, 2, 0, 0, 1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 0, 0, 2, 2, 2, 0, 0, 1, 1, 1, 1, 1],
-    [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-  ],
-  interactableTiles: [
+  specialTiles: [
+    {
+      x: 15,
+      y: 8,
+      type: "transition",
+      destinationRoomID: "01-00"
+    },
+    {
+      x: 15,
+      y: 9,
+      type: "terrain",
+    },
     {
       x: 6,
       y: 5,
       type: "npc",
-      dialogue: "It's dangerous to go alone! Take this."
+      dialogue: "OldMan-1",
+      contents: [
+        "1-health_potion"
+      ]
+      /* dialogue: "It's dangerous to go alone! Take this." */
     },
     {
-      x: 6,
-      y: 5,
-      type: "chest",
-      contents: ["1x-health_potion"]
-    },
-  ],
-  transitionTiles: [
-    {
-      x: 0,
+      x: 5,
       y: 8,
-      type: "normal",
+      type: "chest",
+      contents: [
+        "1-health_potion"
+      ]
+    },
+    {
+      x: 5,
+      y: 1,
+      type: "battle",
     },
   ],
 };

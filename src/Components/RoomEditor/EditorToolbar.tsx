@@ -1,5 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useEditorContext } from './EditorProvider';
+/* import { SpecialTile } from './Interface'; */
 
 function EditorToolbar() {
   const {
@@ -9,8 +10,14 @@ function EditorToolbar() {
     exportRoomData,
     importRoomData
   } = useEditorContext();
-  /* const [selectedFile, setSelectedFile] = useState<File | null>(null); */
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [tileContents, setTileContents] = useState<string[]>(['']);
+  const handleContentChange = (index: number, newValue: string) => {
+    const updatedContents = [...tileContents];
+    updatedContents[index] = newValue;
+    setTileContents(updatedContents);
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -19,27 +26,21 @@ function EditorToolbar() {
       event.target.value = ''; // Reset file input
     }
   };
-  /* const handleImportClick = () => { */
-  /*   if (selectedFile) { */
-  /*     importBoardData(selectedFile); */
-  /*     setSelectedFile(null); // Reset selected file after importing */
-  /*   } */
-  /* }; */
   const handleImportClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click(); // Trigger the file input click event
     }
   };
 
-
   return (
     <div style={{
       display:'flex',
+      flexGrow:'1',
       flexDirection:'column',
       gap:'0.5rem',
       backgroundColor:'hsla(var(--one_bg1), 0.6)',
       padding:'0.75rem',
-      height:'100%',
+      /* height:'100%', */
       width:'100%',
     }}>
       <div style={{
@@ -49,9 +50,7 @@ function EditorToolbar() {
       }}>
         <p>ID:</p>
         <input
-          style={{
-            width:'6rem',
-          }}
+          style={{ width:'6rem', }}
           id="greet-input"
           value={room.roomID}
           onChange={(e) => setRoomID(e.currentTarget.value)}
@@ -59,9 +58,7 @@ function EditorToolbar() {
         />
         <p>Name:</p>
         <input
-          style={{
-            width:'24rem',
-          }}
+          style={{ width:'16rem', }}
           id="greet-input"
           value={room.roomName}
           onChange={(e) => setRoomName(e.currentTarget.value)}
@@ -93,6 +90,77 @@ function EditorToolbar() {
           ref={fileInputRef}
           onChange={handleFileChange}
         />
+      </div>
+
+      <div style={{
+        display:'flex',
+        /* flexDirection:'column', */
+        gap:'1rem',
+        alignItems:'center',
+      }}>
+        <div style={{
+          display:'flex',
+          flexDirection:'column',
+          gap:'0.5rem',
+        }}>
+          New Special Tile Editor
+          <div style={{
+            display:'flex',
+            alignItems:'center',
+            gap:'0.5rem',
+          }}>
+            <p>Type:</p>
+            <input
+              /* value={room.roomName} */
+              /* onChange={(e) => setRoomName(e.currentTarget.value)} */
+              placeholder="Enter tile tile..."
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <p>Dialogue:</p>
+            <input
+              /* value={newSpecialTile.dialogue} */
+              /* onChange={(e) => setNewSpecialTile({ ...newSpecialTile, dialogue: e.target.value })} */
+              placeholder="Enter dialogue..."
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection:'column',
+              /* alignItems: 'center', */
+              gap: '0.5rem',
+            }}
+          >
+            <p>Contents:</p>
+            {tileContents.map((content, index) => (
+              <input
+                key={index}
+                value={content}
+                onChange={(e) => handleContentChange(index, e.target.value)}
+                placeholder="Enter contents..."
+              />
+            ))}
+            <button
+              style={{width:'100%'}}
+              onClick={() => {setTileContents([...tileContents, '']);}}
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <button>
+          Generate
+        </button>
+        <div>
+          TODO: New Tile JSON Go Here
+        </div>
       </div>
     </div>
   );
