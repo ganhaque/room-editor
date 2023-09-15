@@ -1,7 +1,18 @@
-# Tauri + React + Typescript
+# Room Editor
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+# Installation/Build
+Make sure you have rust installed
+```
+# git clone & cd into the repo
+git clone https://github.com/ganhaque/port-moon.git && cd room-editor
 
-## Recommended IDE Setup
+# install dependencies
+npm install
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+# you can run it by either
+npm run tauri dev
+
+# or build it using
+npm run tauri build
+```
+
