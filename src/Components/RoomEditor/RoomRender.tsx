@@ -3,18 +3,11 @@ import { useEditorContext } from './EditorProvider';
 import { tileTypeToColor } from './Interface';
 
 const RoomRender: React.FC = () => {
-  const { room } = useEditorContext();
+  const {
+    room,
+    handleTileClick,
+  } = useEditorContext();
 
-  const handleTileClick = (x: number, y: number) => {
-    const specialTile = room.specialTiles.find((tile) => tile.x === x && tile.y === y);
-
-    if (specialTile) {
-      console.log(JSON.stringify(specialTile, null, 2));
-    }
-    else {
-      console.log('Empty tile');
-    }
-  };
 
   // Generate the grid cells
   const renderGrid = () => {

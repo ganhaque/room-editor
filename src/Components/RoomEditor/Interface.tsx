@@ -62,3 +62,9 @@ export const exampleRoom: Room = {
     },
   ],
 };
+
+export const defaultSpecialTile: SpecialTile = {
+  x: -1,
+  y: -1,
+  type: 'chest',
+}

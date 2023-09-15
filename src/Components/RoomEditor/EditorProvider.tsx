@@ -8,17 +8,25 @@ import { homeDir } from '@tauri-apps/api/path';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 /* import { useLocalStorage } from '../Hooks/LocalStorageHook'; */
 /* import { BoardProps, exampleBoards, ListProps, CardProps } from '../Trello/Data'; */
-import { Room, exampleRoom, SpecialTile } from './Interface';
+import { Room, exampleRoom, SpecialTile, defaultSpecialTile } from './Interface';
 
 interface EditorContextType {
   room: Room;
+  newSpecialTile: SpecialTile;
   setRoomName: (newRoomName: string) => void;
   setRoomID: (newRoomID: string) => void;
-  /* handleTileClick: ( */
-  /*   x: number, */
-  /*   y: number, */
-  /* ) => void; */
+  setSpecialTileType: (newType: string) => void;
+  setSpecialTileDialogue: (newType: string) => void;
+  setSpecialTileDestinationRoomID: (newType: string) => void;
+  addContentToSpecialTile: (newContent: string) => void;
+  removeContentFromSpecialTile: (index: number) => void;
+  setContentAtIndex: (index: number, newContent: string) => void;
+  handleTileClick: (
+    x: number,
+    y: number,
+  ) => void;
   exportRoomData: () => void;
+  printSpecialTile: () => void;
   importRoomData: (file: File) => void;
 }
 
@@ -28,7 +36,7 @@ const EditorContext = createContext<EditorContextType | null>(null);
 export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   /* const [room, setRoom] = useLocalStorage("room", exampleRoom); */
   const [room, setRoom] = useState<Room>(exampleRoom);
-  const [newSpecialTile, setNewSpecialTile] = useState<SpecialTile>();
+  const [newSpecialTile, setNewSpecialTile] = useState<SpecialTile>(defaultSpecialTile);
 
   const setRoomID = (newRoomID: string) => {
     const updatedRoom = { ...room, roomID: newRoomID };
@@ -39,38 +47,75 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     setRoom(updatedRoom);
   };
 
-  /* const generateNewSpecialTile = ( */
-  /*   x: number, */
-  /*   y: number, */
-  /*   type: string, */
-  /*   dialogue: string, */
-  /*   contents: string, */
-  /*   destinationRoomID: string, */
-  /*   requirement: string, */
-  /* ): SpecialTile => { */
-  /*   // Customize the properties as needed */
-  /*   const newSpecialTile: SpecialTile = { */
-  /*     x, */
-  /*     y, */
-  /*     type: 'new_type', */
-  /*     dialogue: 'New dialogue', */
-  /*     contents: ['Content 1', 'Content 2'], */
-  /*     destinationRoomID: 'destinationRoomID', */
-  /*     requirement: 'requirement', */
-  /*   }; */
-  /*   return newSpecialTile; */
-  /* }; */
+  const setSpecialTileType = (newType: string) => {
+    if (newSpecialTile) {
+      const updatedSpecialTile = { ...newSpecialTile, type: newType };
+      setNewSpecialTile(updatedSpecialTile);
+    }
+  };
+  const setSpecialTileDialogue = (newDialogue: string) => {
+    if (newSpecialTile) {
+      const updatedSpecialTile = { ...newSpecialTile, dialogue: newDialogue };
+      setNewSpecialTile(updatedSpecialTile);
+    }
+  };
+  const setSpecialTileDestinationRoomID = (newDestinationRoomID: string) => {
+    if (newSpecialTile) {
+      const updatedSpecialTile = { ...newSpecialTile, destinationRoomID: newDestinationRoomID };
+      setNewSpecialTile(updatedSpecialTile);
+    }
+  };
+  const addContentToSpecialTile = (newContent: string) => {
+    if (newSpecialTile) {
+      const updatedContents = newSpecialTile.contents
+        ? [...newSpecialTile.contents, newContent]
+        : [newContent]; // Create a new array with newContent if contents is undefined
+      const updatedSpecialTile = { ...newSpecialTile, contents: updatedContents };
+      setNewSpecialTile(updatedSpecialTile);
+    }
+  };
+  const removeContentFromSpecialTile = (index: number) => {
+    if (newSpecialTile && newSpecialTile.contents) {
+      const updatedContents = [...newSpecialTile.contents];
+      updatedContents.splice(index, 1); // Remove the content at the specified index
+      const updatedSpecialTile = { ...newSpecialTile, contents: updatedContents };
+      setNewSpecialTile(updatedSpecialTile);
+    }
+  };
+  const setContentAtIndex = (index: number, newContent: string) => {
+    if (newSpecialTile && newSpecialTile.contents) {
+      if (index >= 0 && index < newSpecialTile.contents.length) {
+        const updatedContents = [...newSpecialTile.contents];
+        updatedContents[index] = newContent; // Update the content at the specified index
+        const updatedSpecialTile = { ...newSpecialTile, contents: updatedContents };
+        setNewSpecialTile(updatedSpecialTile);
+      } else {
+        console.error('Invalid index:', index);
+      }
+    }
+  };
 
-  /* const handleTileClick = (x: number, y: number) => { */
-  /*   const updatedRoom = { ...room }; */
-  /**/
-  /*   const newSpecialTile = generateNewSpecialTile(x, y); */
-  /**/
-  /*   console.log('New SpecialTile:', newSpecialTile); */
-  /**/
-  /*   setRoom(updatedRoom); */
-  /* }; */
+  const printSpecialTile = () => {
+    console.log(newSpecialTile);
+  }
 
+  const handleTileClick = (x: number, y: number) => {
+    console.log(x, y);
+    const specialTile = room.specialTiles.find((tile) => tile.x === x && tile.y === y);
+
+    if (specialTile) { // Delete if there is an object there already
+      console.log(JSON.stringify(specialTile, null, 2));
+      const updatedSpecialTiles = room.specialTiles.filter((tile) => !(tile.x === x && tile.y === y));
+      const updatedRoom = { ...room, specialTiles: updatedSpecialTiles };
+      setRoom(updatedRoom);
+    }
+    else {
+      /* console.log('Empty tile'); */
+      const newTile = { ...newSpecialTile, x: x, y: y };
+      const updatedSpecialTiles = [...room.specialTiles, newTile];
+      const updatedRoom = { ...room, specialTiles: updatedSpecialTiles };
+      setRoom(updatedRoom);}
+  };
 
   const exportRoomData = async () => {
     /* const dataToExport = boards[selectedBoardIndex]; // Get the selected board data */
@@ -89,7 +134,6 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     await writeTextFile(selected, jsonData);
     console.log("Successfully saved file to", selected);
   };
-
   const importRoomData = (file: File) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -99,7 +143,7 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
 
         if (importedData) {
           console.log(importedData);
-          /* TODO: Fix this */
+          setRoom(importedData);
           // Update the lists and cards in the selected board
           /* const updatedBoards = [...boards]; */
           /* const selectedBoard = updatedBoards[selectedBoardIndex]; */
@@ -130,10 +174,19 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
     <EditorContext.Provider
       value={{
         room,
+        newSpecialTile,
         setRoomID,
         setRoomName,
-        /* handleTileClick, */
+        setSpecialTileType,
+        setSpecialTileDestinationRoomID,
+        setSpecialTileDialogue,
+        /* setSpecialTileContents, */
+        addContentToSpecialTile,
+        removeContentFromSpecialTile,
+        setContentAtIndex,
+        handleTileClick,
         exportRoomData,
+        printSpecialTile,
         importRoomData,
         /* boards, */
         // Add more functions for other board-related updates

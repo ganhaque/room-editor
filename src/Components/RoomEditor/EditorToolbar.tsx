@@ -1,23 +1,25 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useEditorContext } from './EditorProvider';
 /* import { SpecialTile } from './Interface'; */
 
 function EditorToolbar() {
   const {
     room,
+    newSpecialTile,
+    setSpecialTileType,
+    setSpecialTileDestinationRoomID,
+    setSpecialTileDialogue,
+    /* setSpecialTileContents, */
+    addContentToSpecialTile,
+    removeContentFromSpecialTile,
+    setContentAtIndex,
+    printSpecialTile,
     setRoomName,
     setRoomID,
     exportRoomData,
     importRoomData
   } = useEditorContext();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const [tileContents, setTileContents] = useState<string[]>(['']);
-  const handleContentChange = (index: number, newValue: string) => {
-    const updatedContents = [...tileContents];
-    updatedContents[index] = newValue;
-    setTileContents(updatedContents);
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -111,8 +113,8 @@ function EditorToolbar() {
           }}>
             <p>Type:</p>
             <input
-              /* value={room.roomName} */
-              /* onChange={(e) => setRoomName(e.currentTarget.value)} */
+              value={newSpecialTile.type}
+              onChange={(e) => setSpecialTileType(e.currentTarget.value)}
               placeholder="Enter tile tile..."
             />
           </div>
@@ -125,8 +127,22 @@ function EditorToolbar() {
           >
             <p>Dialogue:</p>
             <input
-              /* value={newSpecialTile.dialogue} */
-              /* onChange={(e) => setNewSpecialTile({ ...newSpecialTile, dialogue: e.target.value })} */
+              value={newSpecialTile.dialogue || ''}
+              onChange={(e) => setSpecialTileDialogue(e.currentTarget.value)}
+              placeholder="Enter dialogue..."
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <p>DestinationRoomID:</p>
+            <input
+              value={newSpecialTile.destinationRoomID || ''}
+              onChange={(e) => setSpecialTileDestinationRoomID(e.currentTarget.value)}
               placeholder="Enter dialogue..."
             />
           </div>
@@ -139,28 +155,39 @@ function EditorToolbar() {
             }}
           >
             <p>Contents:</p>
-            {tileContents.map((content, index) => (
-              <input
+            {newSpecialTile.contents?.map((content, index) => (
+              <div
                 key={index}
-                value={content}
-                onChange={(e) => handleContentChange(index, e.target.value)}
-                placeholder="Enter contents..."
-              />
+                style={{display:'flex', alignItems:'center', gap:'0.5rem'}}
+              >
+                <input
+                  value={content}
+                  onChange={(e) => setContentAtIndex(index, e.target.value)}
+                  placeholder="Enter contents..."
+                />
+                <button
+                  onClick={() => {removeContentFromSpecialTile(index)}}
+                >
+                  X
+                </button>
+              </div>
             ))}
             <button
               style={{width:'100%'}}
-              onClick={() => {setTileContents([...tileContents, '']);}}
+              onClick={() => {addContentToSpecialTile('');}}
             >
               +
             </button>
           </div>
         </div>
-        <button>
+        <button
+          onClick={() => {printSpecialTile()}}
+        >
           Generate
         </button>
-        <div>
-          TODO: New Tile JSON Go Here
-        </div>
+        {/* <div> */}
+        {/*   TODO: New Tile JSON Go Here */}
+        {/* </div> */}
       </div>
     </div>
   );
