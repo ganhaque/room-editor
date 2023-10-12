@@ -58,7 +58,7 @@ export const exampleRoom: Room = {
     {
       x: 5,
       y: 1,
-      type: "battle",
+      type: "encounter",
     },
   ],
 };

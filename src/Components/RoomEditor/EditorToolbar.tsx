@@ -48,28 +48,6 @@ function EditorToolbar() {
       <div style={{
         display:'flex',
         gap:'0.5rem',
-        alignItems:'center',
-      }}>
-        <p>ID:</p>
-        <input
-          style={{ width:'6rem', }}
-          id="greet-input"
-          value={room.roomID}
-          onChange={(e) => setRoomID(e.currentTarget.value)}
-          placeholder="Enter room ID..."
-        />
-        <p>Name:</p>
-        <input
-          style={{ width:'16rem', }}
-          id="greet-input"
-          value={room.roomName}
-          onChange={(e) => setRoomName(e.currentTarget.value)}
-          placeholder="Enter room name..."
-        />
-      </div>
-      <div style={{
-        display:'flex',
-        gap:'0.5rem',
       }}>
         <button
           type='submit'
@@ -96,6 +74,28 @@ function EditorToolbar() {
 
       <div style={{
         display:'flex',
+        gap:'0.5rem',
+        alignItems:'center',
+      }}>
+        <p>ID:</p>
+        <input
+          style={{ width:'6rem', }}
+          id="greet-input"
+          value={room.roomID}
+          onChange={(e) => setRoomID(e.currentTarget.value)}
+          placeholder="Enter room ID..."
+        />
+        <p>Name:</p>
+        <input
+          style={{ width:'16rem', }}
+          id="greet-input"
+          value={room.roomName}
+          onChange={(e) => setRoomName(e.currentTarget.value)}
+          placeholder="Enter room name..."
+        />
+      </div>
+      <div style={{
+        display:'flex',
         /* flexDirection:'column', */
         gap:'1rem',
         alignItems:'center',
@@ -105,7 +105,9 @@ function EditorToolbar() {
           flexDirection:'column',
           gap:'0.5rem',
         }}>
-          New Special Tile Editor
+          <h2 style={{margin:'1rem 0', textDecoration:'underline'}}>
+            New Special Tile Editor
+          </h2>
           <div style={{
             display:'flex',
             alignItems:'center',

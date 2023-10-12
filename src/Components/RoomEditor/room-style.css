@@ -1,15 +1,29 @@
+:root {
+  /* --grid-height: 24px; */
+  /* --grid-width: 24px; */
+  --grid-height: 36px;
+  --grid-width: 36px;
+  /* --grid-height: 48px; */
+  /* --grid-width: 48px; */
+}
+
 .tile {
-  width: 25px;
-  height: 25px;
-  border: 1px solid black;
+  /* width: 48px; */
+  /* height: 48px; */
+  width: var(--grid-width);
+  height: var(--grid-height);
+  outline: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* outline-color: hsla(var(--base06), 0.2); */
+  outline-color: hsla(var(--one_bg3), 1);
+  background-size: cover;
 }
 
 .label {
-  width: 25px;
-  height: 25px;
+  width: var(--grid-width);
+  height: var(--grid-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,6 +31,19 @@
 
 .tile:hover {
   opacity: 70%;
+}
+.tile.empty:hover {
+  background-color: hsla(var(--one_bg3), 0.7);
+  background-image: url('../../assets/yes.png');
+}
+/* .tile:not(.empty):hover { */
+  /* opacity: 20%; */
+/* } */
+.tile:not(.empty):hover::after {
+  content: url('../../assets/no.png');
+  /* content: "x"; */
+  /* font-size: var(--grid-width); */
+  /* color: hsla(var(--black), 1); */
 }
 
 .board {
@@ -28,4 +55,30 @@
   display: flex;
   /* align-items: center; */
   /* justify-content: center; */
+}
+
+/* .tile.empty { */
+/*   background-color: transparent; */
+/* } */
+
+.tile.shop {
+  background-image: url('../../assets/shop.png');
+}
+.tile.terrain {
+  background-image: url('../../assets/wall.png');
+}
+.tile.transition {
+  background-image: url('../../assets/door.png');
+}
+.tile.house {
+  background-image: url('../../assets/house.png');
+}
+.tile.chest {
+  background-image: url('../../assets/box.png');
+}
+.tile.npc {
+  background-image: url('../../assets/npc.png');
+}
+.tile.encounter {
+  background-image: url('../../assets/enemy.png');
 }

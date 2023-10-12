@@ -22,7 +22,7 @@ function App() {
   return (
     <div style={{
       display:'flex',
-      flexDirection:'column',
+      /* flexDirection:'column', */
       gap:'0.5rem',
       height:'calc(100vh - 1rem)',
       /* alignItems:'center', */
