@@ -145,8 +145,45 @@ function EditorToolbar() {
             <input
               value={newSpecialTile.destinationRoomID || ''}
               onChange={(e) => setSpecialTileDestinationRoomID(e.currentTarget.value)}
-              placeholder="Enter dialogue..."
+              placeholder="enter roomId"
             />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection:'column',
+              /* alignItems: 'center', */
+              gap: '0.5rem',
+            }}
+          >
+            {/* TODO:: change dialog to string array instead*/}
+            <p>Dialog:</p>
+            {newSpecialTile.contents?.map((content, index) => (
+              <div
+                key={index}
+                style={{display:'flex', alignItems:'center', gap:'0.5rem'}}
+              >
+                <textarea
+                  style={{
+                    width:'100%',
+                  }}
+                  value={content}
+                  onChange={(e) => setContentAtIndex(index, e.target.value)}
+                  placeholder="count-id, ex: 2-health_potion"
+                />
+                <button
+                  onClick={() => {removeContentFromSpecialTile(index)}}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+            <button
+              style={{width:'100%'}}
+              onClick={() => {addContentToSpecialTile('');}}
+            >
+              +
+            </button>
           </div>
           <div
             style={{
@@ -165,7 +202,7 @@ function EditorToolbar() {
                 <input
                   value={content}
                   onChange={(e) => setContentAtIndex(index, e.target.value)}
-                  placeholder="Enter contents..."
+                  placeholder="count-id, ex: 2-health_potion"
                 />
                 <button
                   onClick={() => {removeContentFromSpecialTile(index)}}

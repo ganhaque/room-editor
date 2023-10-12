@@ -25,6 +25,10 @@ interface EditorContextType {
     x: number,
     y: number,
   ) => void;
+  handleTileDrag: (
+    x: number,
+    y: number,
+  ) => void;
   exportRoomData: () => void;
   printSpecialTile: () => void;
   importRoomData: (file: File) => void;
@@ -114,7 +118,25 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
       const newTile = { ...newSpecialTile, x: x, y: y };
       const updatedSpecialTiles = [...room.specialTiles, newTile];
       const updatedRoom = { ...room, specialTiles: updatedSpecialTiles };
-      setRoom(updatedRoom);}
+      setRoom(updatedRoom);
+    }
+  };
+
+  const handleTileDrag = (x: number, y: number) => {
+    console.log(x, y);
+    /* const specialTile = room.specialTiles.find((tile) => tile.x === x && tile.y === y); */
+    /**/
+    /* if (specialTile) { // Delete if there is an object there already */
+    /*   console.log(JSON.stringify(specialTile, null, 2)); */
+    /*   const updatedSpecialTiles = room.specialTiles.filter((tile) => !(tile.x === x && tile.y === y)); */
+    /*   const updatedRoom = { ...room, specialTiles: updatedSpecialTiles }; */
+    /*   setRoom(updatedRoom); */
+    /* } */
+
+    const newTile = { ...newSpecialTile, x: x, y: y };
+    const updatedSpecialTiles = [...room.specialTiles, newTile];
+    const updatedRoom = { ...room, specialTiles: updatedSpecialTiles };
+    setRoom(updatedRoom);
   };
 
   const exportRoomData = async () => {
@@ -185,6 +207,7 @@ export const EditorProvider: React.FC<{children: ReactNode}> = ({ children }) =>
         removeContentFromSpecialTile,
         setContentAtIndex,
         handleTileClick,
+        handleTileDrag,
         exportRoomData,
         printSpecialTile,
         importRoomData,

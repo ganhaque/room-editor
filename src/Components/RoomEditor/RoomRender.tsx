@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './room-style.css'; // You can create a CSS file for styling
 import { useEditorContext } from './EditorProvider';
 /* import { tileTypeToColor } from './Interface'; */
@@ -7,7 +8,24 @@ const RoomRender: React.FC = () => {
   const {
     room,
     handleTileClick,
+    handleTileDrag,
   } = useEditorContext();
+
+  const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsMouseDown(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseLeave = (x: number, y: number) => {
+    if (isMouseDown) {
+      handleTileDrag(x, y);
+    }
+  };
 
 
   // Generate the grid cells
@@ -34,17 +52,13 @@ const RoomRender: React.FC = () => {
 
       for (let x = 0; x < 20; x++) {
         const specialTile = room.specialTiles.find((tile) => tile.x === x && tile.y === y);
-        /* const cellStyle = { */
-        /*   backgroundColor: specialTile ? tileTypeToColor[specialTile.type] : 'transparent', */
-        /*   borderColor: specialTile ? "transparent" : "hsla(var(--base06), 0.2)" */
-        /* }; */
-
         row.push(
           <div
             key={`cell-${x}-${y}`}
             className={`tile ${specialTile? specialTile.type : 'empty'}`}
             /* style={cellStyle} */
             onClick={() => handleTileClick(x, y)}
+            onMouseLeave={() => handleMouseLeave(x, y)} // Add this event
           ></div>
         );
       }
@@ -61,7 +75,9 @@ const RoomRender: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
       }}
-      className=""
+      className="board"
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
     >
       {renderGrid()}
     </div>
